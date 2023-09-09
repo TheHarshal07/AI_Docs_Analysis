@@ -1,16 +1,18 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-use-before-define */
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import styles from './login.module.css';
 import InputFile from '../InputControl/inputFiled';
+import logo1 from '../../images/logo.png';
 import {Link,useNavigate} from 'react-router-dom';
 import { useState } from 'react';
 import { signInWithEmailAndPassword} from 'firebase/auth';
-
 import { Auth } from 'firebase/auth';
 import { auth } from '../../firebase';
 
 export default function login() {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
+    // eslint-disable-next-line react-hooks/rules-of-hooks    
     const navigate = useNavigate();
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [values, setValues] = useState({
@@ -25,7 +27,13 @@ export default function login() {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [submitButtonDisabled, setsubmitButtonDisabled] = useState(false);
 
-    
+    // var typed = new Typed(".auto-type",{
+    //     strings:["HEllo Harshal"],
+    //     typespeed: 80,
+    //     backspeed: 70,
+    //     loop: true
+
+    // })
 
     const handlefunction = () =>{
         // if(values.name ? "" : setError("Please enter the name"))
@@ -44,7 +52,7 @@ export default function login() {
         console.log(res);
         setsubmitButtonDisabled(false);
         setMsg("Login successfully");
-        navigate("/");
+        navigate("/Home");
 
     })
     .catch((err) =>{
@@ -58,49 +66,48 @@ export default function login() {
 
 };
 
-
-
-
-
-
   return (
-    <div className={styles.container}>
-        <div className={styles.innerbox}>
-            <h2 className={styles.heading}>Login</h2>
-          
-
-
-            <InputFile label="email" placeholder="Enter you email"
-            onChange={(event)=>
-                setValues((prev) => ({...prev, email:event.target.value}))
-            
-            }
-            
-            ></InputFile>
-
-
-
-
-            <InputFile label="Password" placeholder="Enter you password" 
-
-            onChange={(event)=>
-            setValues((prev)=>({...prev,password: event.target.value}))
-            }
-            
-            ></InputFile>
-
-
-            <div className={styles.footer}>
-                <b className={styles.error}>{errormsg}</b>
-                <b className={styles.success}>{SuccesMsg}</b>
-                <button onClick={handlefunction}
-                disabled={submitButtonDisabled}
-                >Login</button>
-                <p>Already have login? <span><Link to="/signup">login</Link></span></p>
+    <div className="row">
+        <img className={styles.logo} src={logo1} alt="logo" />
+        <div className="col-md-8">
+            <div className={styles.font}>
+                <h2 class="auto-type"><span class="auto">Automate document correction</span> system for Admit cards</h2>
+             
             </div>
         </div>
+        <div className="col-md-4">
+            <div className={styles.container}>
+                <div className={styles.innerbox}>
+                    <h2 className={styles.heading}>Login</h2>
+                
+                    <InputFile label="email" placeholder="Enter you email"
+                    onChange={(event)=>
+                        setValues((prev) => ({...prev, email:event.target.value}))
+                    
+                    }
+                    required></InputFile>
 
-    
+                    <InputFile label="Password" placeholder="Enter you password" 
+
+                    onChange={(event)=>
+                    setValues((prev)=>({...prev,password: event.target.value}))
+                    }
+                    
+                    required></InputFile>
+
+                    <div className={styles.footer}>
+                        <b className={styles.error}>{errormsg}</b>
+                        <b className={styles.success}>{SuccesMsg}</b>
+                        <button onClick={handlefunction}
+                        disabled={submitButtonDisabled}
+                        >Login</button>
+                        <p>New user? <span><Link to="/signup">Signup</Link></span></p>
+                    </div>
+                </div>
+
+            
+            </div>
     </div>
+</div>
   )
 }

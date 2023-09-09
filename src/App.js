@@ -10,8 +10,8 @@ import { auth } from './firebase';
 
 function App() {
  const [userName, setName] = useState();
-  useEffect(()=>{
-    auth.onAuthStateChanged((user)=>{
+  useEffect(()=>{  // Hooks will allow us to refer the state changes or interaction with external changes
+    auth.onAuthStateChanged((user)=>{ // It is an event in firebase is listner that trigger user's authintication state changed
       if (user){
         setName(user.displayName);
       }
@@ -27,7 +27,8 @@ function App() {
       <Routes>
         <Route path="/signup" element={<Signup />}></Route>
         <Route path="/login" element={<Login />}></Route>
-        <Route path="/" element={<Home name={userName} />}></Route>
+        <Route path="/Home" element={<Home name={userName} />} ></Route>
+        <Route path="/" element={<Login />}></Route> 
       </Routes>
     </Router>
   </div>

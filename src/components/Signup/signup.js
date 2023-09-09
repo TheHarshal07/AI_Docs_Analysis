@@ -3,6 +3,7 @@ import React from 'react';
 import styles from './signup.module.css';
 import InputFile from '../InputControl/inputFiled';
 import {Link,useNavigate} from 'react-router-dom';
+import logo2 from '../../images/logo.png';
 import { useState } from 'react';
 import {createUserWithEmailAndPassword, updateProfile} from 'firebase/auth';
 
@@ -69,49 +70,57 @@ export default function login() {
 
 
   return (
-    <div className={styles.container}>
-        <div className={styles.innerbox}>
-            <h2 className={styles.heading}>Sign up</h2>
-            <InputFile label="Name" placeholder="Enter you Name"
-             onChange={(event)=>
-                setValues((prev) => ({...prev, name:event.target.value}))
-            
-            }
-            
-            ></InputFile>
-
-
-            <InputFile label="email" placeholder="Enter you email"
-            onChange={(event)=>
-                setValues((prev) => ({...prev, email:event.target.value}))
-            
-            }
-            
-            ></InputFile>
-
-
-
-
-            <InputFile label="Password" placeholder="Enter you password" 
-
-            onChange={(event)=>
-            setValues((prev)=>({...prev,password: event.target.value}))
-            }
-            
-            ></InputFile>
-
-
-            <div className={styles.footer}>
-                <b className={styles.error}>{errormsg}</b>
-                <b className={styles.success}>{SuccesMsg}</b>
-                <button onClick={handlefunction}
-                disabled={submitButtonDisabled}
-                >Sign up</button>
-                <p>Already have login? <span><Link to="/login">login</Link></span></p>
+    <div className="row">
+        <img className={styles.logo} src={logo2} alt="logo" />
+        <div className="col-md-8">
+            <div className={styles.font1}>
+                <h2 className="auto-type1"><span class="auto">Automate document correction</span> system for Admit cards</h2>
             </div>
         </div>
+        <div className="col-md-4">
+            <div className={styles.container}>
+                <div className={styles.innerbox}>
+                    <h2 className={styles.heading}>Sign up</h2>
+                    <InputFile label="Name" placeholder="Enter you Name"
+                    onChange={(event)=>
+                        setValues((prev) => ({...prev, name:event.target.value}))
+                    
+                    }
+                    
+                    ></InputFile>
 
-    
+
+                    <InputFile label="email" placeholder="Enter you email"
+                    onChange={(event)=>
+                        setValues((prev) => ({...prev, email:event.target.value}))
+                    
+                    }
+                    
+                    ></InputFile>
+
+
+
+
+                    <InputFile label="Password" placeholder="Enter you password" 
+
+                    onChange={(event)=>
+                    setValues((prev)=>({...prev,password: event.target.value}))
+                    }
+                    
+                    ></InputFile>
+
+
+                    <div className={styles.footer}>
+                        <b className={styles.error}>{errormsg}</b>
+                        <b className={styles.success}>{SuccesMsg}</b>
+                        <button onClick={handlefunction}
+                        disabled={submitButtonDisabled}
+                        >Sign up</button>
+                        <p>Already have an account? <span><Link to="/login">login</Link></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
   )
 }
