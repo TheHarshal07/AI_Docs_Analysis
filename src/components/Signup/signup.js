@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './signup.module.css';
 import InputFile from '../InputControl/inputFiled';
 import {Link,useNavigate} from 'react-router-dom';
@@ -7,8 +8,9 @@ import logo2 from '../../images/logo.png';
 import { useState } from 'react';
 import {createUserWithEmailAndPassword, updateProfile} from 'firebase/auth';
 
-import { Auth } from 'firebase/auth';
-import { auth } from '../../firebase';
+import { signInWithPopup } from "firebase/auth"
+import { auth, provider } from '../../firebase';
+import Home from '../Home/Home';
 
 export default function login() {
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -26,6 +28,22 @@ export default function login() {
     const [SuccesMsg, setMsg] = useState("");
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [submitButtonDisabled, setsubmitButtonDisabled] = useState(false);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [values1, setValues1] = useState("");
+    const googleAuth = () =>{
+       
+        signInWithPopup(auth,provider).then((data)=>{
+            setValues1(data.user.email)
+            localStorage.setItem("email",data.user.email)
+            navigate("/Home")
+        
+        })
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(()=>{
+        setValues1(localStorage.getItem.email)
+    })
 
     
 
@@ -70,7 +88,9 @@ export default function login() {
 
 
   return (
+    
     <div className="row">
+    
         <img className={styles.logo} src={logo2} alt="logo" />
         <div className="col-md-8">
             <div className={styles.font1}>
@@ -118,6 +138,7 @@ export default function login() {
                         >Sign up</button>
                         <p>Already have an account? <span><Link to="/login">login</Link></span></p>
                     </div>
+                    
                 </div>
             </div>
         </div>

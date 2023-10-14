@@ -1,4 +1,34 @@
+.container1{
+   width: 100%;
+   min-height: 10vh;
+   display: flex;
+   flex-direction: column ;
+   justify-content: center;
+   /* align-items: center; */
+   /* padding-right: 400px; */
+   padding: 10px 150px;
+}
+.main_container h1{
+    text-align: center;
+    padding: 10px 20px;
+    padding-bottom: -10px;
+}
 
+
+.main_container{
+    min-width: 100px;
+    height: fit-content;
+    width: fit-content;
+    box-shadow: 1px 1px 4px rgb(36, 35, 35) ;
+    margin-top: 150px;
+    margin-left: auto;
+    margin-right:auto;
+    padding: 40px;
+    border-radius: 25px;
+    justify-content: center;
+    gap: 20px;
+
+}
 
 .navbar{
     display: flex;
@@ -47,3 +77,6 @@
     padding-top: 5px;
 
 }
+
+
+/* Upload icon css */

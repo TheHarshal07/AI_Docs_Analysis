@@ -50,3 +50,146 @@
   float: right;
 
 }
+
+
+
+/* Upload bix css */
+
+.upload-box{
+  font-family: "Poppins", 'sans-serif';
+  width: 100%;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 15px;
+  margin-bottom: 100px;
+  
+}
+
+.upload-box .icon{
+  bottom: 0;
+  top: 0;
+}
+.upload-box .para{
+  text-align: center;
+}
+
+.upload-box form{
+  height: fit-content;
+  display: flex;
+  cursor: pointer;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border: 2px dashed #475cf4;
+  border-radius: 10px;
+
+}
+form :where(i,p){
+  color: #0086fe;
+}
+
+form i{
+  font-size: 50px;
+}
+form p{
+  margin-top: 15px;
+  font-size: 10px;
+
+}
+
+section .row{
+  margin-bottom: 10px;
+  background: #d5ebff;
+  list-style: none;
+  padding: 10px ;
+  /* border-radius: 10px; */
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+ 
+}
+
+section .row i{
+  color: #0086fe;
+  font-size: 30px;
+  
+    
+}
+
+section .details span{
+  font-size: 12px;
+}
+
+.loading-area .row .content{
+  width: 100%;
+  margin-left: px;
+}
+
+.loading-area .details{
+  display: flex;
+  /* justify-content: center; */
+  margin-bottom: 7px;
+  align-items: center;
+  justify-content: space-between;
+
+}
+
+.loading-area .content .loading-bar{
+  height: 5px;
+  width: 100%;
+  margin-bottom: 4px;
+  background: #fff;
+  border-radius: 30px;
+}
+
+.content .loading-bar .loading{
+  height: 100%;
+  width: 50%;
+  background: #0086fe;
+  border-radius: inherit;
+}
+
+.uploaded-area{
+  overflow-y: scroll;
+}
+.uploaded-area.onprogress{
+  max-height: 150px;
+}
+
+.uploaded-area::-webkit-scrollbar{
+  width: 0px;
+}
+.uploaded-area .row .content{
+  display: flex;
+  align-items: center;
+  /* justify-content: space-between; */
+  border-radius: 20px;
+}
+.uploaded-area .row .details{
+  display: flex;
+  margin-left: 15px;
+  flex-direction: column;
+  
+}
+
+.uploaded-area .row .details .size{
+  color:  #404040;
+  font-size: 11px;
+  
+}
+
+.uploaded-area i.fa-check{
+  font-size: 20px;
+  margin-left: 200px;
+
+  
+}

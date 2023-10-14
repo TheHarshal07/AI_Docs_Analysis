@@ -6,8 +6,7 @@ export default function inputFiled(props) {
       {props.label && <label>{props.label}</label>}
       <input type={props.label} {...props}/>
       
-
-
     </div>
   )
 }
+

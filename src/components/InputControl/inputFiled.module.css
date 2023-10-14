@@ -1,0 +1,23 @@
+.InputContent{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.InputContent label{
+    font-weight: 900;
+    font-size: 15px;
+    color: rgb(37, 35, 35);
+}
+.InputContent input{
+    border-radius: 5px;
+    border: 1px solid #eee;
+    padding: 5px 100px;
+    color: black;
+    outline: none;
+
+}
+
+.InputContent input:hover{
+    border-color:  rgb(45, 131, 229);
+    
+}

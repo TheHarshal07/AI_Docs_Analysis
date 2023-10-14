@@ -29,6 +29,7 @@
     box-shadow: 1px 1px 4px rgb(27, 29, 29);
     border-radius: 20px;
     padding: 30px;
+
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -75,6 +76,7 @@
     font-size: 1rem;
     padding: 9px 16px;
     width: 100%;
+    font-weight: 500;
 }
 .footer button:disabled{
     background-color: gray !important;
@@ -107,4 +109,38 @@
 
 .font span{
     color: orange;
+}
+
+.innerbox .googlebtn{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+
+    /* border: 1px solid; */
+}
+
+.googlebtn .icons button{
+    font-size: large;
+    font-weight: 500;
+    font-style: 'IBM Plex Mono', monospace;
+    background-color: #fff;
+    width: fit-content;
+    border-radius: 10px;
+    padding: 1px 70px;
+    
+
+}
+
+.googlebtn .icons button:hover{
+    font-size: larger;
+
+}
+
+.googlebtn .icons img{
+    width: 30px;
+    float: left;
+    padding-right: 10px;
+    padding-top: 4px;
+
 }
