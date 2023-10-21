@@ -1,12 +1,12 @@
 .container1{
-   width: 100%;
+   width: 50%;
    min-height: 10vh;
    display: flex;
    flex-direction: column ;
    justify-content: center;
-   /* align-items: center; */
-   /* padding-right: 400px; */
-   padding: 10px 150px;
+   align-items: center;
+   padding-right: 400px;
+   padding: 10px 15px;
 }
 .main_container h1{
     text-align: center;
@@ -25,7 +25,7 @@
     margin-right:auto;
     padding: 40px;
     border-radius: 25px;
-    justify-content: center;
+    /* justify-content: center; */
     gap: 20px;
 
 }

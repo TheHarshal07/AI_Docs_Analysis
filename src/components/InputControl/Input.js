@@ -1,13 +1,16 @@
-import React from "react"
-import styles from "../InputControl/inputFiled.module.css"
-export default function input(props){
-    return(
-        <div className={styles.InputContent}>
-            {/* This for the label */}
-            {props.label && <labe>{props.label}</labe> } 
+import React from "react";
+import styles from "../InputControl/input.module.css";
+export default function input(props) {
+  return (
+    <div className={styles.InputContent}>
 
-            {/* This for the input field  */}
-            <input type={props.label} {...props} />
+        <div className="form-floating mb-3">
+
+        <input type={props.type} class="form-control" {...props} />
+        
+        {props.label && <label>{props.label}</label>}
+
         </div>
-    )
+    </div>
+  );
 }

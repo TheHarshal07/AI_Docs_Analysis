@@ -1,24 +1,26 @@
-.container{
+.InputContent{
     display: flex;
-    flex-direction: column;
-    gap: 8px;
-
+    flex-direction: row;
+    gap: 4px;
+    /* padding: 4px; */
+    /* margin: 10px 100px; */
 }
-.container label{
-    font-weight: 600;
+.InputContent label{
+    font-weight: 400;
     font-size: 15px;
-    color: rgb(50, 46, 46);
-}
 
-.container input{
+    padding: 10px;
+}
+.InputContent input{
     border-radius: 5px;
     border: 1px solid #eee;
     padding: 10px 15px;
+    width: 370px;
     outline: none;
-    color: black;
+
 }
 
-.container input:hover{
+.InputContent input:hover{
     border-color:  rgb(45, 131, 229);
     
 }

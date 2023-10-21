@@ -122,12 +122,13 @@
 
 .googlebtn .icons button{
     font-size: large;
-    font-weight: 500;
+    /* font-weight: 500; */
     font-style: 'IBM Plex Mono', monospace;
     background-color: #fff;
     width: fit-content;
     border-radius: 10px;
     padding: 1px 70px;
+    margin-top: -10px;
     
 
 }

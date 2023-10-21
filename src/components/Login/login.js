@@ -124,7 +124,6 @@ export default function login() {
             </div>
             <div className={styles.googlebtn}>
               <div className={styles.icons}>
-                
                 <button onClick={googleAuth} type="button">Sign with google
                 <img src={Gicon} alt="Google" />
                 </button>

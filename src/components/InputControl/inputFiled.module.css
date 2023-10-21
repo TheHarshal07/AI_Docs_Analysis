@@ -1,23 +1,24 @@
-.InputContent{
+.container{
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 8px;
+
 }
-.InputContent label{
-    font-weight: 900;
+.container label{
+    font-weight: 600;
     font-size: 15px;
-    color: rgb(37, 35, 35);
+    color: rgb(50, 46, 46);
 }
-.InputContent input{
+
+.container input{
     border-radius: 5px;
     border: 1px solid #eee;
-    padding: 5px 100px;
-    color: black;
+    padding: 10px 15px;
     outline: none;
-
+    color: black;
 }
 
-.InputContent input:hover{
+.container input:hover{
     border-color:  rgb(45, 131, 229);
     
 }

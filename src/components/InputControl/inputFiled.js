@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from './input.module.css'
+import styles from "../InputControl/inputFiled.module.css"
 export default function inputFiled(props) {
   return (
     <div className={styles.container}>
