@@ -1,274 +1,50 @@
-import React, { useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import styles from "./Home.module.css";
-import icon from "../../images/logo.png";
-import Inputfield from "../InputControl/input";
-import imgg from "../../images/upload.png";
-import countrydata from "../../Countrystate.json"
-
-import axios from "axios";
+import React from 'react'
+import styles from './Home.module.css'
+import TopBar from '../Home/navbar'
+import Homepic from '../../images/Home2.png'
+import { useNavigate } from 'react-router-dom'
 
 export default function Home(props) {
-  const [files, setFiles] = useState([]);
-  const [uploadFiles, setuploadFile] = useState([]);
-  const [showprogess, setShowprogess] = useState(false);
-  const fileInputRef = useRef(null);
-
-  const handlefileInputClick = () => {
-    fileInputRef.current.click();
-  };
-
-  const uploadFile = (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
-    const filename =
-      file.name.length > 12
-        ? `${file.name.substring(0, 13)}... .${file.name.split(".")[1]}`
-        : file.name;
-
-    const formData = new FormData();
-    formData.append("file", file);
-
-    setFiles((prevState) => [...prevState, { name: filename, loading: 10 }]);
-    setShowprogess(true);
-    alert("Hello");
-
-    axios
-      .post("http://127.0.0.1:5000/upload", formData, {
-        onUploadProgress: ({ loaded, total }) => {
-          setFiles((prevState) => {
-            const newFiles = [...prevState];
-            newFiles[newFiles.length - 1].loading = Math.floor(
-              (loaded / total) * 100
-            );
-
-            return newFiles;
-          });
-          if (loaded == total) {
-            alert("error");
-            const filesize =
-              total < 1024
-                ? `${total} KB`
-                : `${(loaded / (1024 * 1024)).toFixed(2)} MB`;
-            setuploadFile([...uploadFiles, { name: filename, size: filesize }]);
-            setFiles([]);
-            setShowprogess(false);
-          }
-        },
-      })
-      .catch(console.error);
-  };
-
-  const [CountryId, setCountryId] = useState('');
-  const [state, setState] = useState([]);
-  const [stateId, setStateId] = useState("");
-
-  const handleCountry=(e) =>{
-    const getcountryId = e.target.value;
-    setCountryId(getcountryId)
-     
-    const getCountrydata = countrydata.find(country=>country.country_id===getcountryId).states;
-    setState(getCountrydata)
+  const navigate = useNavigate();
+  const handleroute=() =>{
+    navigate('/UserInfo')
   }
-  const handlestate=(e) =>{
-    const stateId = e.target.value;
-    setStateId(stateId)
-  }
-
-  const [values, setValues] = useState({
-    fname: "",
-    lname: "",
-    mobile: "",
-  });
-
+  
   return (
     <>
-      <div className={styles.topbar}>
-        <img className={styles.icon} src={icon} alt="icon" />
-        <div className={styles.navbar}>
-          <nav>
-            <a href="">Home</a>
-            <a href="">Service</a>
-            <a href="">About us</a>
-            <a href="">Contact</a>
-          </nav>
-        </div>
-      </div>
+    <div>
+      <TopBar icon={props.icon} />
       <br />
-
-      <h2 className={styles.user}>
+      <h2 className="user">
         Welcome <span>{props.name}</span>
       </h2>
+    </div>
+    <br />
 
-      <div className={styles.main_container}>
-        <h1>User Information</h1>
-        <div className={styles.container1}>
-          <div className="upload-box">
-            <p className="para">Upload your photo</p>
-            <form action="">
-              <input
-                className={styles.file_input}
-                type="file"
-                name="file"
-                hidden
-                ref={fileInputRef}
-                onChange={uploadFile}
-              ></input>
-              {/* <button  onClick={() => props.uploadFile()}>Submit</button> */}
-              <div className="icon" onClick={handlefileInputClick}>
-                <img src={imgg} alt="" />
-              </div>
-              <p>Browse file to uplaod</p>
-            </form>
-
-            {showprogess && (
-              <section className="loading-area">
-                {files.map((file, index) => (
-                  <li className="row" key={index}>
-                    <div className="content">
-                      <i className="fas fa-file-alt"></i>
-                      <div className="details">
-                        <span className="name">{`${file.name} - uploading`}</span>
-                        <span
-                          className="percent"
-                          max="100"
-                        >{`${file.loading}%`}</span>
-                        <div className="loading-bar">
-                          <div
-                            className="loading"
-                            style={{ width: `${file.loading}` }}
-                          ></div>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                ))}
-              </section>
-            )}
-
-            <section className="uploaded-area">
-              {uploadFiles.map((file, index) => (
-                <li className="row" key={index}>
-                  <div className="content upload">
-                    <i className="fas fa-file-alt"></i>
-                    <div className="details">
-                      <span className="name">{file.name}</span>
-                      <span className="size">{file.size}</span>
-                    </div>
-                    <i className="fas fa-check"></i>
-                  </div>
-                </li>
-              ))}
-            </section>
-          </div>
-          <br />
+    <div className={styles.homesection}>
+      <div className={styles.content_box}>
+        <div className={styles.content}>
+          <h1 className={styles.title}>
+            <br />
+            Welcome to 
+            <br />
+            <span className={styles.title_short}> AutoDocs</span>
+          </h1>
+          <p className={styles.description}>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+             Cupiditate facere fuga rerum reprehenderit repellendus recusandae possimus, beatae modi ducimus corrupti a magnam odit voluptates? Excepturi ipsum nam earum ducimus modi!
+           
+          </p>
         </div>
-
-        <div className="row">
-          <div className="col-md-6">
-            <Inputfield
-              label="First Name"
-              placeholder="First Name"
-              type="text"
-              onChange={(event) =>
-                setValues((prev) => ({ ...prev, fname: event.target.values }))
-              }
-              required
-            ></Inputfield>
-
-            <Inputfield
-               label="Address"
-               placeholder="Address"
-               type="textarea"
-              onChange={(event) =>
-                setValues((prev) => ({ ...prev, lname: event.target.values }))
-              }
-              required
-            ></Inputfield>
-
-            <Inputfield
-              label="Email"
-              placeholder="Email"
-              type="email"
-              onChange={(event) =>
-                setValues((prev) => ({ ...prev, mobile: event.target.values }))
-              }
-              required
-            ></Inputfield>
-            {/* <Inputfield
-              label="Country"
-              placeholder="Country"
-              type = "text"
-              onChange={(event) =>
-                setValues((prev) => ({ ...prev, mobile: event.target.values }))
-              }
-              required
-            ></Inputfield> */}
-            <div className="form-floating mb-3">
-              
-              <select  className="form-control" onChange={(e)=>(handleCountry(e))}>
-                <option value="">--select-country--</option>
-                {
-                   countrydata.map((getcountry, index)=>(
-                    <option value={getcountry.country_id} key={index} >{getcountry.country_name}</option>
-                    ))
-                }
-                
-              </select>
-            </div>
-          </div>
-
-          <div className="col-md-6">
-            <Inputfield
-              label="Last Name"
-              placeholder="mobile number"
-              onChange={(event) =>
-                setValues((prev) => ({ ...prev, lname: event.target.values }))
-              }
-              required
-            ></Inputfield>
-
-            <Inputfield
-              label="Birth Date"
-              placeholder="Birth Date"
-              type="date"
-              onChange={(event) =>
-                setValues((prev) => ({ ...prev, mobile: event.target.values }))
-              }
-              required
-            ></Inputfield>
-            <Inputfield
-              label="Mobile no."
-              placeholder="Mobile no."
-              onChange={(event) =>
-                setValues((prev) => ({ ...prev, mobile: event.target.values }))
-              }
-              required
-            ></Inputfield>
-            {/* <Inputfield
-              label="State"
-              placeholder="State"
-              type = "text"
-              onChange={(event) =>
-                setValues((prev) => ({ ...prev, mobile: event.target.values }))
-              }
-              required
-            ></Inputfield> */}
-            <div className="form-floating mb-3">
-              
-              <select  className="form-control" onChange={(e)=>(handlestate(e))}>
-                <option value="">--select-state--</option>
-                {
-                   state.map((getstate, index)=>(
-                    <option value={getstate.state_id} key={index} >{getstate.state_name}</option>
-                    ))
-                }
-                
-              </select>
-            </div>
-          </div>
+        <div className={styles.button}>
+        <button className="btn" onClick={handleroute}>Let's get started</button>
         </div>
-      </div>
+      </div> 
+      <picture>
+        <img src={Homepic} alt="" />
+      </picture>
+      
+    </div>
     </>
-  );
+  )
 }

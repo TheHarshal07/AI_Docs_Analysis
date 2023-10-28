@@ -10,7 +10,7 @@ import {createUserWithEmailAndPassword, updateProfile} from 'firebase/auth';
 
 import { signInWithPopup } from "firebase/auth"
 import { auth, provider } from '../../firebase';
-import Home from '../Home/Home';
+import Home from '../Home/UserInfo';
 
 export default function login() {
     // eslint-disable-next-line react-hooks/rules-of-hooks
