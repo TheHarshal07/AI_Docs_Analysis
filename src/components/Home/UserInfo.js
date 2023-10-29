@@ -3,18 +3,20 @@ import { Link } from "react-router-dom";
 import styles from "./UserInfo.module.css";
 import Inputfield from "../InputControl/input";
 import imgg from "../../images/upload.png";
-import countrydata from "../../Countrystate.json"
-import Top from '../Home/navbar'
-
+import countrydata from "../../Countrystate.json";
+import Top from "../Home/navbar";
+import {getDownloadURL ,ref, uploadBytes} from 'firebase/storage'
+import {imageDb} from '../../firebase'
+import {v4} from 'uuid';
 import axios from "axios";
 
 export default function UserInfo(props) {
-  
   // All state
   const [files, setFiles] = useState([]);
   const [uploadFiles, setuploadFile] = useState([]);
   const [showprogess, setShowprogess] = useState(false);
   const fileInputRef = useRef(null);
+  const [img, setImg]  = useState([])
 
   const handlefileInputClick = () => {
     fileInputRef.current.click();
@@ -58,32 +60,82 @@ export default function UserInfo(props) {
       .catch(console.error);
   };
 
-  const [CountryId, setCountryId] = useState('');
+  const [CountryId, setCountryId] = useState("");
   const [state, setState] = useState([]);
   const [stateId, setStateId] = useState("");
 
-  const handleCountry=(e) =>{
-    const getcountryId = e.target.value;
-    setCountryId(getcountryId)
-     
-    const getCountrydata = countrydata.find(country=>country.country_id===getcountryId).states;
-    setState(getCountrydata)
-  }
-  const handlestate=(e) =>{
-    const stateId = e.target.value;
-    setStateId(stateId)
-  }
 
+
+
+  const handleCountry = (e) => {
+    const getcountryId = e.target.value;
+    setCountryId(getcountryId);
+
+    const getCountrydata = countrydata.find(
+      (country) => country.country_id === getcountryId
+    ).states;
+    setState(getCountrydata);
+  };
+  const handlestate = (e) => {
+    const stateId = e.target.value;
+    setStateId(stateId);
+  };
+
+  
   const [values, setValues] = useState({
     fname: "",
     lname: "",
     mobile: "",
+    email: "",
+    dob: "",
+    addr: ""
+
   });
 
+  const submitdata = async (event) =>{
+    // To upload the image on firebase
+    const imgset = ref(imageDb, `files/${v4()}`)
+    uploadBytes(imgset, img).then(data=>{
+      getDownloadURL(data.ref).then(val=>{
+        setImg(val)
+      })
+    })
+
+    event.preventDefault();
+    const  {fname,lname,mobile, email, dob, addr} = values;
+    const res = fetch(
+      "https://major-project-2d90b-default-rtdb.firebaseio.com/userRecord.json",
+      {
+
+        method: "POST",
+        headers: {
+         "Content-Type" : "applictaion/json"
+        },
+        body: JSON.stringify({
+          fname ,
+          lname ,
+          mobile ,
+          email ,
+          dob ,
+          addr ,
+          CountryId,
+          stateId
+
+        })
+      })
+
+      if (res){
+        alert("Data is saved")
+      }
+      else{
+        alert("Please fill the data")
+      }
+
+  }
 
   return (
     <>
-    {/* // Navbar section */}
+      {/* // Navbar section */}
       <div>
         <Top icon={props.icon} />
         <br />
@@ -95,66 +147,55 @@ export default function UserInfo(props) {
 
       <div className={styles.main_container}>
         <h1>User Information</h1>
-        <div className={styles.container1}>
-          <div className="upload-box">
-            <p className="para">Upload your photo</p>
-            <form action="">
-              <input
-                className={styles.file_input}
-                type="file"
-                name="file"
-                hidden
-                ref={fileInputRef}
-                onChange={uploadFile}
-              ></input>
-              {/* <button  onClick={() => props.uploadFile()}>Submit</button> */}
-              <div className="icon1" onClick={handlefileInputClick}>
-                <img src={imgg} alt="" />
-              </div>
-              <p>Browse file to uplaod</p>
-            </form>
 
-            {showprogess && (
-              <section className="loading-area">
-                {files.map((file, index) => (
-                  <li className="row" key={index}>
-                    <div className="content">
-                      <i className="fas fa-file-alt"></i>
-                      <div className="details">
-                        <span className="name">{`${file.name} - uploading`}</span>
-                        <span
-                          className="percent"
-                          max="100"
-                        >{`${file.loading}%`}</span>
-                        <div className="loading-bar">
-                          <div
-                            className="loading"
-                            style={{ width: `${file.loading}` }}
-                          ></div>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                ))}
-              </section>
-            )}
-
-            <section className="uploaded-area">
-              {uploadFiles.map((file, index) => (
-                <li className="row" key={index}>
-                  <div className="content upload">
-                    <i className="fas fa-file-alt"></i>
-                    <div className="details">
-                      <span className="name">{file.name}</span>
-                      <span className="size">{file.size}</span>
-                    </div>
-                    <i className="fas fa-check"></i>
+        <div className="row">
+          <div className="col-md-5">
+            <div className={styles.container1}>
+              <div className="upload-box">
+                <p className="para">Upload your photo</p>
+                <form action="">
+                  <input
+                    className={styles.file_input}
+                    type="file"
+                    name="photo"
+                    hidden
+                    ref={fileInputRef}
+                    onChange={(e)=>setImg(e.target.files[0])}
+                  ></input>
+                  {/* <button  onClick={() => props.uploadFile()}>Submit</button> */}
+                  <div className="icon1" onClick={handlefileInputClick}>
+                    <img src={imgg} alt="" />
                   </div>
-                </li>
-              ))}
-            </section>
+                  <p>Browse file to uplaod</p>
+                </form>
+              </div>
+              <br />
+            </div>
           </div>
-          <br />
+
+          <div className="col-md-5">
+            <div className={styles.container1}>
+              <div className="upload-box">
+                <p className="para">Upload your signature</p>
+                <form action="">
+                  <input
+                    className={styles.file_input}
+                    type="file"
+                    name="signature"
+                    hidden
+                    ref={fileInputRef}
+                    onChange={uploadFile}
+                  ></input>
+                  {/* <button  onClick={() => props.uploadFile()}>Submit</button> */}
+                  <div className="icon1" onClick={handlefileInputClick}>
+                    <img src={imgg} alt="" />
+                  </div>
+                  <p>Browse file to uplaod</p>
+                </form>
+              </div>
+              <br />
+            </div>
+          </div>
         </div>
 
         <div className="row">
@@ -163,18 +204,22 @@ export default function UserInfo(props) {
               label="First Name"
               placeholder="First Name"
               type="text"
+              name="fname"
+              value={values.fname}
               onChange={(event) =>
-                setValues((prev) => ({ ...prev, fname: event.target.values }))
+                setValues((prev) => ({ ...prev, fname: event.target.value }))
               }
               required
             ></Inputfield>
 
             <Inputfield
-               label="Address"
-               placeholder="Address"
-               type="textarea"
+              label="Address"
+              placeholder="Address"
+              type="textarea"
+              name="addr"
+              value={values.addr}
               onChange={(event) =>
-                setValues((prev) => ({ ...prev, lname: event.target.values }))
+                setValues((prev) => ({ ...prev, addr: event.target.value }))
               }
               required
             ></Inputfield>
@@ -183,30 +228,25 @@ export default function UserInfo(props) {
               label="Email"
               placeholder="Email"
               type="email"
+              name="email"
+              value={values.email}
               onChange={(event) =>
-                setValues((prev) => ({ ...prev, mobile: event.target.values }))
+                setValues((prev) => ({ ...prev, email: event.target.value }))
               }
               required
             ></Inputfield>
-            {/* <Inputfield
-              label="Country"
-              placeholder="Country"
-              type = "text"
-              onChange={(event) =>
-                setValues((prev) => ({ ...prev, mobile: event.target.values }))
-              }
-              required
-            ></Inputfield> */}
+            
             <div className="form-floating mb-3">
-              
-              <select  className="form-control" onChange={(e)=>(handleCountry(e))}>
+              <select
+                className="form-control"
+                onChange={(e) => handleCountry(e)}
+              >
                 <option value="">--select-country--</option>
-                {
-                   countrydata.map((getcountry, index)=>(
-                    <option value={getcountry.country_id} key={index} >{getcountry.country_name}</option>
-                    ))
-                }
-                
+                {countrydata.map((getcountry, index) => (
+                  <option value={getcountry.country_id} key={index}>
+                    {getcountry.country_name}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
@@ -215,8 +255,10 @@ export default function UserInfo(props) {
             <Inputfield
               label="Last Name"
               placeholder="mobile number"
+              name="lname"
+              value={values.lname}
               onChange={(event) =>
-                setValues((prev) => ({ ...prev, lname: event.target.values }))
+                setValues((prev) => ({ ...prev, lname: event.target.value }))
               }
               required
             ></Inputfield>
@@ -225,41 +267,37 @@ export default function UserInfo(props) {
               label="Birth Date"
               placeholder="Birth Date"
               type="date"
+              name="dob"
+              value={values.dob}
               onChange={(event) =>
-                setValues((prev) => ({ ...prev, mobile: event.target.values }))
+                setValues((prev) => ({ ...prev, dob: event.target.value }))
               }
               required
             ></Inputfield>
             <Inputfield
               label="Mobile no."
               placeholder="Mobile no."
+              name="mobile"
+              value={values.mobile}
               onChange={(event) =>
-                setValues((prev) => ({ ...prev, mobile: event.target.values }))
+                setValues((prev) => ({ ...prev, mobile: event.target.value }))
               }
               required
             ></Inputfield>
-            {/* <Inputfield
-              label="State"
-              placeholder="State"
-              type = "text"
-              onChange={(event) =>
-                setValues((prev) => ({ ...prev, mobile: event.target.values }))
-              }
-              required
-            ></Inputfield> */}
             <div className="form-floating mb-3">
-              
-              <select  className="form-control" onChange={(e)=>(handlestate(e))}>
+              <select className="form-control" onChange={(e) => handlestate(e)}>
                 <option value="">--select-state--</option>
-                {
-                   state.map((getstate, index)=>(
-                    <option value={getstate.state_id} key={index} >{getstate.state_name}</option>
-                    ))
-                }
-                
+                {state.map((getstate, index) => (
+                  <option value={getstate.state_id} key={index}>
+                    {getstate.state_name}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
+        </div>
+        <div className={styles.button}>
+        <button className="btn" onClick={submitdata}>Submit</button>
         </div>
       </div>
     </>
