@@ -9,6 +9,8 @@ import {getDownloadURL ,ref, uploadBytes} from 'firebase/storage'
 import {imageDb} from '../../firebase'
 import {v4} from 'uuid';
 import axios from "axios";
+import Dashboard from "../Home/dashboard";
+import Details from "./Details";
 
 export default function UserInfo(props) {
   // All state
@@ -17,10 +19,18 @@ export default function UserInfo(props) {
   const [showprogess, setShowprogess] = useState(false);
   const fileInputRef = useRef(null);
   const [img, setImg]  = useState([])
+  const [selectedFileName, setselectedFileName] = useState()
+
+  const handleinputChange = (e) => {
+    const selectedFile = e.target.files[0]
+    // setImg(selectedFile)
+    setselectedFileName(selectedFile)
+  }
 
   const handlefileInputClick = () => {
     fileInputRef.current.click();
   };
+
 
   const uploadFile = (event) => {
     const file = event.target.files[0];
@@ -135,21 +145,27 @@ export default function UserInfo(props) {
 
   return (
     <>
-      {/* // Navbar section */}
-      <div>
+      {/* // Navbar section  */}
+       {/* <div>
         <Top icon={props.icon} />
         <br />
         <h2 className="user">
           Welcome <span>{props.name}</span>
         </h2>
-      </div>
-      <br />
+      </div>  */}
 
-      <div className={styles.main_container}>
+     
+      <br />
+<div className="row">
+  <div className="col-md-4">
+  <Dashboard/>
+  </div>
+  <div className="col-md-8">
+  <div className={styles.main_container}>
         <h1>User Information</h1>
 
         <div className="row">
-          <div className="col-md-5">
+          <div className="col-md-6">
             <div className={styles.container1}>
               <div className="upload-box">
                 <p className="para">Upload your photo</p>
@@ -160,23 +176,23 @@ export default function UserInfo(props) {
                     name="photo"
                     hidden
                     ref={fileInputRef}
-                    onChange={(e)=>setImg(e.target.files[0])}
+                    onChange={handleinputChange}
                   ></input>
                   {/* <button  onClick={() => props.uploadFile()}>Submit</button> */}
                   <div className="icon1" onClick={handlefileInputClick}>
-                    <img src={imgg} alt="" />
+                    <img src={selectedFileName ? URL.createObjectURL(selectedFileName) : imgg} alt="" />
                   </div>
-                  <p>Browse file to uplaod</p>
+                  <p>{selectedFileName ? `selected file name: ${selectedFileName.name}` : 'Browse file to upload'}</p>
                 </form>
               </div>
               <br />
             </div>
           </div>
 
-          <div className="col-md-5">
+          <div className="col-md-6">
             <div className={styles.container1}>
               <div className="upload-box">
-                <p className="para">Upload your signature</p>
+                <p className="para">Upload signature</p>
                 <form action="">
                   <input
                     className={styles.file_input}
@@ -300,6 +316,13 @@ export default function UserInfo(props) {
         <button className="btn" onClick={submitdata}>Submit</button>
         </div>
       </div>
+      <br />
+      <br />
+      <br />
+      <Details/>
+  </div>
+</div>
+      
     </>
   );
 }

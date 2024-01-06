@@ -9,7 +9,7 @@
     justify-content: space-between;
     display: block;
     text-align: center;
-    float: left;
+    float: right;
     text-decoration: none;
     padding: 10px 20px;
     font-size: 25px;
@@ -17,11 +17,11 @@
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
 }
 
-.navbar a:hover{
-    font-size: x-large;
+/* .navbar a:hover{
+    font-size: large;
     text-shadow: 0 0 3px rgb(179, 236, 240),
     0 0 5px rgb(179, 236, 240), 0 0 8px rgb(179, 236, 240);
-}
+} */
 
 .user{
     padding: 60px 0;
