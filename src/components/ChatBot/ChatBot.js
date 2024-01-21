@@ -1,7 +1,7 @@
 const OpenAI = require("openai");
 // new OpenAI({ apiKey, dangerouslyAllowBrowser: true })
 const openai = new OpenAI({
-  apiKey: "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", dangerouslyAllowBrowser: true // This is also the default, can be omitted
+  apiKey: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", dangerouslyAllowBrowser: true // This is also the default, can be omitted
 });
 
 
