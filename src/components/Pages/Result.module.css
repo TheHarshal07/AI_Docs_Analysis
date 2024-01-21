@@ -1,0 +1,86 @@
+/* Result.module.css */
+
+.parent{
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 100px 0;
+}
+.container2 {
+    max-width: 850px;
+    background: #fff;
+    margin: 0 auto;
+    padding-bottom: 15px;
+    /* height: 100ch;  */
+    align-items: center ;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+    padding: 10px 30px;
+    
+  }
+  
+  .hrr{
+    border: 2px solid black;
+  }
+
+  .button{
+    display:flex;
+    justify-content: center;
+    padding: 5px 10px;
+  }
+  .header {
+    margin-bottom: 30px;
+  }
+  
+  .fullName {
+    font-size: 40px;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+  
+  .firstName {
+    font-weight: 700;
+  }
+  
+  .lastName {
+    font-weight: 300;
+  }
+  
+  .contactInfo {
+    margin-bottom: 20px;
+  }
+  
+  .email {
+    color: #000000;
+    font-weight: 300;
+    font-weight: bold;
+  }
+  
+  .emailVal {
+    font-weight: bold;
+  }
+  
+  .about {
+    margin-bottom: 15px;
+  }
+  
+  .desc {
+    font-weight: bold;
+  }
+  
+  /* Photo and Signature Styles */
+  .photo_container,
+  .signature_container {
+    margin-bottom: 20px;
+  }
+  
+  .photo_container img,
+  .signature_container img {
+    max-width: 100%;
+    max-width: 100px; /* You can adjust the height as needed */
+    display: block;
+    margin-top: 10px;
+    border-radius: 10px;
+  }
+  

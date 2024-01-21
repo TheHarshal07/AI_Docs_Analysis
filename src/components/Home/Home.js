@@ -3,6 +3,7 @@ import styles from './Home.module.css'
 import TopBar from '../Home/navbar'
 import Homepic from '../../images/Home2.png'
 import { useNavigate } from 'react-router-dom'
+import ChatBot from "../ChatBot/Chatting"
 
 export default function Home(props) {
   const navigate = useNavigate();
@@ -45,6 +46,8 @@ export default function Home(props) {
       </picture>
       
     </div>
+    <ChatBot></ChatBot>
+
     </>
   )
 }

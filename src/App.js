@@ -6,12 +6,15 @@ import UserInfo from "./components/Pages/UserInfo";
 import Home from "./components/Home/Home"
 import Signup from "./components/Signup/signup";
 import Login from "./components/Login/login";
-import UploadImage from "./components/Pages/Uploadimg"
+import UploadImage from "./components/Pages/Uploading"
 import Dashboard  from "./components/Home/dashboard";
 import Details from "./components/Pages/Details"
+import ResultPage from "./components/Pages/Result"
 import { useEffect, useState } from "react";
 import { auth } from "./firebase";
 import {HashLink} from "react-router-hash-link"
+import AppRoutes from "./components/Pages/AppRoutes";
+import ChatBot from "./components/ChatBot/Chatting"
 
 
 function App() {
@@ -25,31 +28,32 @@ function App() {
       } else setName("");
     });
   }, []);
+
+  const [userData, setUserData] = useState(null);
+
+  const handleFormSubmit = (data) => {
+    setUserData(data);
+    console.log("Form submitter",data)
+  };
+
+
   return (
     <>
       {/* <Navbar Home="Home" About="About us" contact="Contact Us" > </Navbar> */}
       <div className="App">
         <BrowserRouter>
+            <AppRoutes onSubmit={handleFormSubmit} userData={userData} />
           <Routes>
             <Route path="/" element={<Login />}></Route>
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/login" element={<Login />}></Route>
-            <Route path="/UserInfo" element={<UserInfo name={userName} />}></Route>
             <Route path="/Home" element={<Home name={userName} />}></Route>
             <Route path="/dashboard" element={<Dashboard name={ userName}/>}></Route>
-            <Route path="/Uploadimg" exact component={UploadImage}></Route>
+            <Route path="/Uploading" exact component={UploadImage}></Route>
             <Route path="/UserInfo" exact component={UserInfo}></Route>
             <Route path="/Details" exact component={Details}></Route>
-
+            <Route path="/chat" exact component={ChatBot}></Route>
           </Routes>
-          
-          {/* <Dashboard>
-          <Routes>
-              <Route path="/dashboard" element={<Dashboard name={ userName}/>}></Route>
-              <Route path="/" element={<Login />}></Route>
-              <Route path="/uploadImage" element={<UploadImage/>}></Route>
-          </Routes>
-            </Dashboard> */}
         </BrowserRouter>
       </div>
     </>

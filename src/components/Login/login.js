@@ -11,8 +11,10 @@ import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../../firebase";
+import TopBar from '../Home/navbar'
 
-export default function login() {
+
+export default function login(props) {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const navigate = useNavigate();
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -76,14 +78,27 @@ export default function login() {
   };
 
   return (
+    <>
+    <div>
+      <TopBar icon={props.icon} />
+     
+    </div>
+
+
+    <div className={styles.body}>
     <div className="row">
-      <img className={styles.logo} src={logo1} alt="logo" />
+      {/* <img className={styles.logo} src={logo1} alt="logo" /> */}
       <div className="col-md-8">
         <div className={styles.font}>
           <h2 class="auto-type">
-            <span class="auto">Automate document correction</span> system for
-            Admit cards
+            <span class="auto">Automate document correction system for
+            Admit cards</span>
           </h2>
+        </div>
+        <div className={styles.btn}>
+          <button className={styles.know_more}>Know more</button>
+          <button className={styles.get_started}>Get Started  </button>
+         
         </div>
       </div>
       <div className="col-md-4">
@@ -124,7 +139,7 @@ export default function login() {
             </div>
             <div className={styles.googlebtn}>
               <div className={styles.icons}>
-                <button onClick={googleAuth} type="button">Sign with google
+                <button onClick={googleAuth} type="button">Sign in with google
                 <img src={Gicon} alt="Google" />
                 </button>
               </div>
@@ -133,5 +148,7 @@ export default function login() {
         </div>
       </div>
     </div>
+    </div>
+    </>
   );
 }

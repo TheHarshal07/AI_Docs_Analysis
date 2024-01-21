@@ -11,10 +11,11 @@
     text-align: center;
     float: right;
     text-decoration: none;
-    padding: 10px 20px;
-    font-size: 25px;
-    font-weight: 500;
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+    padding: 17px 20px;
+    font-size: 20px;
+    font-weight: 200;
+    font-family: 'poppins', sans-serif;
+    color: black;
 }
 
 /* .navbar a:hover{
@@ -36,12 +37,21 @@
 
 .icon{
     display: inline-block;
-    width: 170px;
-    height: 60px;
+    width: 160px;
+    height: 55px;
     left: 35px;
     position: absolute;
     bottom: 0;
     top: 0;
     padding-top: 5px;
 
+}
+
+
+.topbar a:hover{
+    background-color: rgb(249, 243, 235);
+}
+.topbar a.active{
+    background-color: rgb(55, 142, 241);
+    color: white;
 }

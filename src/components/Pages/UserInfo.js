@@ -11,20 +11,32 @@ import {v4} from 'uuid';
 import axios from "axios";
 import Dashboard from "../Home/dashboard";
 import Details from "./Details";
+import HomeIcon from "@mui/icons-material/HomeOutlined";
+import { useNavigate } from "react-router-dom";
+import ChatBot from "../ChatBot/Chatting"
 
-export default function UserInfo(props) {
+const UserInfo = ({ onSubmit } ) => {
   // All state
+  const navigate = useNavigate();
   const [files, setFiles] = useState([]);
   const [uploadFiles, setuploadFile] = useState([]);
   const [showprogess, setShowprogess] = useState(false);
   const fileInputRef = useRef(null);
-  const [img, setImg]  = useState([])
-  const [selectedFileName, setselectedFileName] = useState()
-
+  const [photo, setImg]  = useState(null)
+  const [signature, setSignature] = useState([])
+  const [selectedFileName, setselectedFileName] = useState("Browse file to upload")
+  const [selectedSignature, setselectedSignature] = useState("Browse file to upload")
+  
   const handleinputChange = (e) => {
     const selectedFile = e.target.files[0]
-    // setImg(selectedFile)
-    setselectedFileName(selectedFile)
+    setImg(selectedFile)
+    // setselectedFileName(selectedFile)
+  }
+
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0]
+    setImg(file)
+    setselectedFileName(file.name)
   }
 
   const handlefileInputClick = () => {
@@ -70,12 +82,15 @@ export default function UserInfo(props) {
       .catch(console.error);
   };
 
+  const handleInputsignature = (e) =>{
+    const selectSignature = e.target.files[0]
+    setSignature(selectSignature)
+    setselectedSignature(selectSignature.name)
+  }
+
   const [CountryId, setCountryId] = useState("");
   const [state, setState] = useState([]);
   const [stateId, setStateId] = useState("");
-
-
-
 
   const handleCountry = (e) => {
     const getcountryId = e.target.value;
@@ -91,7 +106,6 @@ export default function UserInfo(props) {
     setStateId(stateId);
   };
 
-  
   const [values, setValues] = useState({
     fname: "",
     lname: "",
@@ -104,58 +118,91 @@ export default function UserInfo(props) {
 
   const submitdata = async (event) =>{
     // To upload the image on firebase
-    const imgset = ref(imageDb, `files/${v4()}`)
-    uploadBytes(imgset, img).then(data=>{
-      getDownloadURL(data.ref).then(val=>{
-        setImg(val)
-      })
-    })
+    // const imgset = ref(imageDb, `files/${v4()}`)
+    // uploadBytes(imgset, photo).then(data=>{
+    //   getDownloadURL(data.ref).then(val=>{
+    //     setImg(val)
+    //   })
+    // })
 
     event.preventDefault();
     const  {fname,lname,mobile, email, dob, addr} = values;
-    const res = fetch(
-      "https://major-project-2d90b-default-rtdb.firebaseio.com/userRecord.json",
-      {
+    // const res = fetch(
+    //   "https://major-project-2d90b-default-rtdb.firebaseio.com/userRecord.json",
+    //   {
 
-        method: "POST",
-        headers: {
-         "Content-Type" : "applictaion/json"
-        },
-        body: JSON.stringify({
-          fname ,
-          lname ,
-          mobile ,
-          email ,
-          dob ,
-          addr ,
-          CountryId,
-          stateId
+    //     method: "POST",
+    //     headers: {
+    //      "Content-Type" : "applictaion/json"
+    //     },
+    //     body: JSON.stringify({
+    //       fname ,
+    //       lname ,
+    //       mobile ,
+    //       email ,
+    //       dob ,
+    //       addr ,
+    //       CountryId,
+    //       stateId
 
-        })
-      })
+    //     })
+    //   })
 
-      if (res){
-        alert("Data is saved")
-      }
-      else{
-        alert("Please fill the data")
-      }
+    //   if (res){
+    //     alert("Data is saved")
+    //   }
+    //   else{
+    //     alert("Please fill the data")
+    //   }
 
-  }
+//  Fetching the response from the model
+    console.log(photo)
+    console.log(signature)
+    const response = await fetch(
+    "https://api-inference.huggingface.co/models/maurya22/photo_and_signature_classifier_model",
+    {
+      headers: { Authorization: "Bearer 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" },
+      method: "POST",
+      body: photo,
+    }
+    );
+    if (!response.ok) {
+      console.error(`Failed to fetch the model ${response.status}.`);
+      console.log("response",response)
+      return;
+    }
+    const result = await response.json();
+    console.log(result)
+
+    // Exrtacting the label from the response
+    const labelArray = result.map(item => item.label)
+    console.log(labelArray[0])
+
+    // onSubmit({ photo, signature, modelResult: { label: labelArray[0], result: result } });
+    console.log("Till now runs fine")
+
+    let keys = Object.values(labelArray)
+    let firstIndex = keys[0]
+    let secondIndex = keys[1]
+
+    if (firstIndex === "photo" && secondIndex === "signature"){
+
+      alert("Great!")
+        // Pass data to onSubmit method
+        onSubmit({ fname, lname,mobile,email,dob,addr, photo, signature, modelResult: { label: labelArray[0], result: result } });
+  
+        // Navigate to 'Result' page
+        navigate('/Result');
+    }
+    else{
+      alert("Ooahoo! Please upload correct documents in the fields ")
+    }
+}
 
   return (
     <>
-      {/* // Navbar section  */}
-       {/* <div>
-        <Top icon={props.icon} />
-        <br />
-        <h2 className="user">
-          Welcome <span>{props.name}</span>
-        </h2>
-      </div>  */}
 
-     
-      <br />
+<form onSubmit={submitdata}>
 <div className="row">
   <div className="col-md-4">
   <Dashboard/>
@@ -163,27 +210,30 @@ export default function UserInfo(props) {
   <div className="col-md-8">
   <div className={styles.main_container}>
         <h1>User Information</h1>
-
         <div className="row">
           <div className="col-md-6">
             <div className={styles.container1}>
               <div className="upload-box">
                 <p className="para">Upload your photo</p>
-                <form action="">
+                <form onClick={() => document.querySelector(".input_field").click()}>
                   <input
-                    className={styles.file_input}
                     type="file"
                     name="photo"
+                    accept="image/*"
+                    className="input_field"
                     hidden
-                    ref={fileInputRef}
-                    onChange={handleinputChange}
+                    onChange={handlePhotoChange}
                   ></input>
-                  {/* <button  onClick={() => props.uploadFile()}>Submit</button> */}
-                  <div className="icon1" onClick={handlefileInputClick}>
-                    <img src={selectedFileName ? URL.createObjectURL(selectedFileName) : imgg} alt="" />
+                  <div className="icon1" >
+                    <img src={imgg} alt="" />
                   </div>
-                  <p>{selectedFileName ? `selected file name: ${selectedFileName.name}` : 'Browse file to upload'}</p>
+                    <p>Browse file to upload</p>
                 </form>
+                <p style={{fontSize:13, textAlign:"center", justifyContent:"space-between"}}>{selectedFileName ? `${selectedFileName}`: `Browse the file`} 
+                  <HomeIcon style={{width:18, height:20}} onClick={() =>{
+                     setselectedFileName("No selected file");
+                      setImg(null)}} >
+                        </HomeIcon></p>
               </div>
               <br />
             </div>
@@ -193,21 +243,24 @@ export default function UserInfo(props) {
             <div className={styles.container1}>
               <div className="upload-box">
                 <p className="para">Upload signature</p>
-                <form action="">
+                <form onClick={() => document.querySelector(".input_field_2").click()}>
                   <input
-                    className={styles.file_input}
                     type="file"
                     name="signature"
                     hidden
-                    ref={fileInputRef}
-                    onChange={uploadFile}
+                    className="input_field_2"
+                    onChange={handleInputsignature}
                   ></input>
-                  {/* <button  onClick={() => props.uploadFile()}>Submit</button> */}
-                  <div className="icon1" onClick={handlefileInputClick}>
+                  <div className="icon1">
                     <img src={imgg} alt="" />
                   </div>
-                  <p>Browse file to uplaod</p>
+                  <p>"Browse the file"</p>
                 </form>
+                <p style={{fontSize:13, textAlign:"center", justifyContent:"space-between"}}>{selectedFileName ? `${selectedSignature}`: `Browse the file`} 
+                  <HomeIcon style={{width:18, height:20}} onClick={() =>{
+                     setselectedSignature("No selected file");
+                      setSignature(null)}} >
+                        </HomeIcon></p>
               </div>
               <br />
             </div>
@@ -313,7 +366,7 @@ export default function UserInfo(props) {
           </div>
         </div>
         <div className={styles.button}>
-        <button className="btn" onClick={submitdata}>Submit</button>
+        <button className="btn" type="submit">Submit</button>
         </div>
       </div>
       <br />
@@ -322,7 +375,10 @@ export default function UserInfo(props) {
       <Details/>
   </div>
 </div>
-      
+</form>
+      <ChatBot/>
     </>
   );
 }
+
+export default UserInfo;

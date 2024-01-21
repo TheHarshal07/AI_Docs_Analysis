@@ -10,9 +10,9 @@ import {createUserWithEmailAndPassword, updateProfile} from 'firebase/auth';
 
 import { signInWithPopup } from "firebase/auth"
 import { auth, provider } from '../../firebase';
-import Home from '../Pages/UserInfo';
+import TopBar from "../Home/navbar"
 
-export default function login() {
+export default function login(props) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const navigate = useNavigate();
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -75,9 +75,6 @@ export default function login() {
         setsubmitButtonDisabled(false);
         setError(err.message);
         console.log("Error-",err.message);
-        
-        // setError("Something went wrong!");
-        // return;
     });
 
 };
@@ -88,14 +85,23 @@ export default function login() {
 
 
   return (
-    
+    <>
+     <div>
+      <TopBar icon={props.icon} />
+     
+    </div>
+    <div className={styles.body}>
     <div className="row">
     
-        <img className={styles.logo} src={logo2} alt="logo" />
+        {/* <img className={styles.logo} src={logo2} alt="logo" /> */}
         <div className="col-md-8">
             <div className={styles.font1}>
-                <h2 className="auto-type1"><span class="auto">Automate document correction</span> system for Admit cards</h2>
+                <h2 className="auto-type1"><span class="auto">Automate document correction system for Admit cards </span></h2>
             </div>
+            <div className={styles.btn}>
+            <button className={styles.know_more}>Know more</button>
+            <button className={styles.get_started}>Get Started</button>
+        </div>
         </div>
         <div className="col-md-4">
             <div className={styles.container}>
@@ -143,5 +149,7 @@ export default function login() {
             </div>
         </div>
     </div>
+    </div>
+    </>
   )
 }

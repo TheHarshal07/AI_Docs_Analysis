@@ -5,6 +5,7 @@ import {NavDropdown} from "react-bootstrap"
 import { useEffect, useState } from "react";
 import { auth } from "../../firebase";
 import { useNavigate } from 'react-router-dom';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 
 
 function TopBar(props) {
@@ -33,6 +34,7 @@ function TopBar(props) {
         <img className={styles.icon} src={icon} alt="icon" />
           <div className={styles.topbar}>
           <nav>
+            <a className={styles.active} href="">Get Started<ArrowRightIcon/></a>
             <a href="">Home</a>
             <a href="">Service</a>
             <a href="">About us</a>
@@ -40,9 +42,9 @@ function TopBar(props) {
           </nav>
         </div>
            <nav>
-            <NavDropdown style={{color:'#6C63FF'}} title={userName}>
-              <NavDropdown.Item onClick={logout}>logout</NavDropdown.Item>
-            </NavDropdown>
+            {/* <NavDropdown style={{color:'#6C63FF'}} title={userName}> */}
+              {/* <a style={{color:'black'}} className={styles.active}>Get Started</a> */}
+            {/* </NavDropdown> */}
           </nav>
       </div>
       <br />
