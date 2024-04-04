@@ -6,11 +6,13 @@ import InputFile from '../InputControl/inputFiled';
 import {Link,useNavigate} from 'react-router-dom';
 import logo2 from '../../images/logo.png';
 import { useState } from 'react';
+
 import {createUserWithEmailAndPassword, updateProfile} from 'firebase/auth';
 
 import { signInWithPopup } from "firebase/auth"
 import { auth, provider } from '../../firebase';
-import TopBar from "../Home/navbar"
+import TopBar from "../Home/navbar";
+import BackGroundImage from "../../images/vadim-bozhko-lbO1iCnbTW0-unsplash.jpg"
 
 export default function login(props) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -30,15 +32,6 @@ export default function login(props) {
     const [submitButtonDisabled, setsubmitButtonDisabled] = useState(false);
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [values1, setValues1] = useState("");
-    const googleAuth = () =>{
-       
-        signInWithPopup(auth,provider).then((data)=>{
-            setValues1(data.user.email)
-            localStorage.setItem("email",data.user.email)
-            navigate("/Home")
-        
-        })
-    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(()=>{
@@ -88,9 +81,11 @@ export default function login(props) {
     <>
      <div>
       <TopBar icon={props.icon} />
-     
     </div>
-    <div className={styles.body}>
+
+    <div className={`${styles.body} ${styles.overlay}`} style={{ backgroundImage: `url(${BackGroundImage})` }}>
+      <div className={styles.body_content}>
+
     <div className="row">
     
         {/* <img className={styles.logo} src={logo2} alt="logo" /> */}
@@ -112,7 +107,6 @@ export default function login(props) {
                         setValues((prev) => ({...prev, name:event.target.value}))
                     
                     }
-                    
                     ></InputFile>
 
 
@@ -148,6 +142,7 @@ export default function login(props) {
                 </div>
             </div>
         </div>
+    </div>
     </div>
     </div>
     </>

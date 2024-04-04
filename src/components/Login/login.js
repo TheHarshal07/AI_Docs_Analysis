@@ -12,7 +12,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../../firebase";
 import TopBar from '../Home/navbar'
-
+import BackGroundImage from "../../images/vadim-bozhko-lbO1iCnbTW0-unsplash.jpg"
 
 export default function login(props) {
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -31,14 +31,20 @@ export default function login(props) {
       localStorage.setItem("email", data.user.email)
       navigate("/Home")
     })
+    .catch(()=>{
+      setErr(" please check your network ")
+    })
   }
-
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [ setAu, setErr] = useState("");
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [errormsg, setError] = useState("");
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [SuccesMsg, setMsg] = useState("");
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [submitButtonDisabled, setsubmitButtonDisabled] = useState(false);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [ authh , setAuthh] = useState("")
 
   // var typed = new Typed(".auto-type",{
   //     strings:["HEllo Harshal"],
@@ -69,8 +75,7 @@ export default function login(props) {
       })
       .catch((err) => {
         setsubmitButtonDisabled(false);
-        setError(err.message);
-        console.log("Error-", err.message);
+        setAuthh("please check you email or password");
 
         // setError("Something went wrong!");
         // return;
@@ -84,15 +89,16 @@ export default function login(props) {
      
     </div>
 
+    <div className={`${styles.body} ${styles.overlay}`} style={{ backgroundImage: `url(${BackGroundImage})` }}>
+      <div className={styles.body_content}>
 
-    <div className={styles.body}>
+      
     <div className="row">
       {/* <img className={styles.logo} src={logo1} alt="logo" /> */}
       <div className="col-md-8">
         <div className={styles.font}>
           <h2 class="auto-type">
-            <span class="auto">Automate document correction system for
-            Admit cards</span>
+            <span class="auto">Automate document correction system for Admit cards</span>
           </h2>
         </div>
         <div className={styles.btn}>
@@ -108,6 +114,7 @@ export default function login(props) {
 
             <InputFile
               label="email"
+              type="email"
               placeholder="Enter you email"
               onChange={(event) =>
                 setValues((prev) => ({ ...prev, email: event.target.value }))
@@ -117,6 +124,7 @@ export default function login(props) {
 
             <InputFile
               label="Password"
+              type="password"
               placeholder="Enter you password"
               onChange={(event) =>
                 setValues((prev) => ({ ...prev, password: event.target.value }))
@@ -127,6 +135,7 @@ export default function login(props) {
             <div className={styles.footer}>
               <b className={styles.error}>{errormsg}</b>
               <b className={styles.success}>{SuccesMsg}</b>
+              <b className={styles.error}>{authh}</b>
               <button onClick={handlefunction} disabled={submitButtonDisabled}>
                 Login
               </button>
@@ -139,6 +148,7 @@ export default function login(props) {
             </div>
             <div className={styles.googlebtn}>
               <div className={styles.icons}>
+                <b className={styles.error}>{setAu}</b>
                 <button onClick={googleAuth} type="button">Sign in with google
                 <img src={Gicon} alt="Google" />
                 </button>
@@ -147,6 +157,7 @@ export default function login(props) {
           </div>
         </div>
       </div>
+    </div>
     </div>
     </div>
     </>

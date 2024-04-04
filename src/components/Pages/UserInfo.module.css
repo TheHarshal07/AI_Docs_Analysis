@@ -8,6 +8,14 @@
    padding-right: 400px;
    padding: 5px 20px;
 }
+
+.container1 .para{
+    font-size: medium;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    color: black;
+}
 .main_container h1{
     text-align: center;
     padding: 10px 20px;
@@ -20,7 +28,7 @@
     height: fit-content;
     width: fit-content;
     box-shadow: 1px 1px 4px rgb(36, 35, 35) ;
-    /* margin-top: 60px; */
+    margin-top: 20px;
     /* margin-left: auto;
     margin-right:auto; */
     padding: 40px;
@@ -32,7 +40,7 @@
 }
 
 .main_container button{
-    background-color: #6C63FF;
+    background-color: rgb(55, 142, 241);
     color: white;
     justify-content: center;
     align-items: center;
@@ -43,9 +51,72 @@
     margin: 6px 0;  
 }
 .main_container button:hover{
-    box-shadow: #6C63FF;
+    background-color: rgb(55, 142, 241);
+    color: white;
+    
+}
+
+
+.container1 .error{
+    font-size: 10px;
+    color: red;
+    text-align: center;
+    margin-top: 1px;
+}
+
+.setErr{
+    font-size: 10px;
+    color: red;
 }
 
 
 
+/* CSS for the loading spinner */
+.loading_spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1); /* Border color */
+    border-left-color: #060808; /* Spinner color */
+    border-radius: 50%; /* Make it round */
+    width: 30px; /* Width of the spinner */
+    height: 30px; /* Height of the spinner */
+    animation: spin 1s linear infinite; /* Apply the animation */
+  }
+  
+  /* Keyframe animation to rotate the spinner */
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg); /* Start at 0 degrees */
+    }
+    100% {
+      transform: rotate(360deg); /* End at 360 degrees (full circle) */
+    }
+  }
+  
+
+
 /* Upload icon css */
+
+
+.faq{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 100px 0px 0px 250px;
+  
+}
+
+
+.crs{
+  border-radius: 5px;
+  border: 1px solid #eee;
+  padding: 15px 15px;
+  width: 370px;
+  outline: none;
+}
+
+.gnd{
+  border-radius: 5px;
+  border: 1px solid #eee;
+  padding: 15px 15px;
+  width: 370px;
+  outline: none;
+}

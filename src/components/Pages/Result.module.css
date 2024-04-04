@@ -84,3 +84,13 @@
     border-radius: 10px;
   }
   
+
+  /*  Css of result page  */
+
+  .prnt{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  

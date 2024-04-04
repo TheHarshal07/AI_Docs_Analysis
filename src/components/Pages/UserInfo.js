@@ -4,93 +4,56 @@ import styles from "./UserInfo.module.css";
 import Inputfield from "../InputControl/input";
 import imgg from "../../images/upload.png";
 import countrydata from "../../Countrystate.json";
-import Top from "../Home/navbar";
-import {getDownloadURL ,ref, uploadBytes} from 'firebase/storage'
-import {imageDb} from '../../firebase'
-import {v4} from 'uuid';
-import axios from "axios";
 import Dashboard from "../Home/dashboard";
 import Details from "./Details";
-import HomeIcon from "@mui/icons-material/HomeOutlined";
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { useNavigate } from "react-router-dom";
 import ChatBot from "../ChatBot/Chatting"
+import FAQ from "../LandingPage/Faq"
 
 const UserInfo = ({ onSubmit } ) => {
   // All state
   const navigate = useNavigate();
-  const [files, setFiles] = useState([]);
-  const [uploadFiles, setuploadFile] = useState([]);
-  const [showprogess, setShowprogess] = useState(false);
   const fileInputRef = useRef(null);
   const [photo, setImg]  = useState(null)
-  const [signature, setSignature] = useState([])
-  const [selectedFileName, setselectedFileName] = useState("Browse file to upload")
-  const [selectedSignature, setselectedSignature] = useState("Browse file to upload")
-  
-  const handleinputChange = (e) => {
-    const selectedFile = e.target.files[0]
-    setImg(selectedFile)
-    // setselectedFileName(selectedFile)
-  }
+  const [signature, setSignature] = useState(null)
+  const [selectedFileName, setselectedFileName] = useState("")
+  const [selectedSignature, setselectedSignature] = useState("")
+  const [ ErrorFile, setErrorFile] = useState("")
 
   const handlePhotoChange = (e) => {
-    const file = e.target.files[0]
-    setImg(file)
-    setselectedFileName(file.name)
+    const file = e.target.files[0];
+    if (file) {
+      const fileName = file.name;
+      const extension = fileName.split('.').pop().toLowerCase();
+      if (extension === 'jpeg' || extension === 'jpg' || extension === 'png') {
+        setselectedFileName(fileName);
+        setImg(file);
+      } else {
+        alert('Please upload a JPEG or PNG file.');
+      }
+    }
   }
-
-  const handlefileInputClick = () => {
-    fileInputRef.current.click();
-  };
-
-
-  const uploadFile = (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
-    const filename =
-      file.name.length > 12
-        ? `${file.name.substring(0, 13)}... .${file.name.split(".")[1]}`
-        : file.name;
-    const formData = new FormData();
-    formData.append("file", file);
-    setFiles((prevState) => [...prevState, { name: filename, loading: 10 }]);
-    setShowprogess(true);
-    alert("Hello");
-    axios
-      .post("http://127.0.0.1:5000/upload", formData, {
-        onUploadProgress: ({ loaded, total }) => {
-          setFiles((prevState) => {
-            const newFiles = [...prevState];
-            newFiles[newFiles.length - 1].loading = Math.floor(
-              (loaded / total) * 100
-            );
-
-            return newFiles;
-          });
-          if (loaded == total) {
-            alert("error");
-            const filesize =
-              total < 1024
-                ? `${total} KB`
-                : `${(loaded / (1024 * 1024)).toFixed(2)} MB`;
-            setuploadFile([...uploadFiles, { name: filename, size: filesize }]);
-            setFiles([]);
-            setShowprogess(false);
-          }
-        },
-      })
-      .catch(console.error);
-  };
-
   const handleInputsignature = (e) =>{
-    const selectSignature = e.target.files[0]
-    setSignature(selectSignature)
-    setselectedSignature(selectSignature.name)
+    const file = e.target.files[0];
+  if (file) {
+    const fileName = file.name;
+    const extension = fileName.split('.').pop().toLowerCase();
+    if (extension === 'jpeg' || extension === 'jpg' || extension === 'png') {
+      setselectedSignature(fileName);
+      setSignature(file);
+    } else {
+      alert('Please upload a JPEG or PNG file.');
+    }
+  }
   }
 
   const [CountryId, setCountryId] = useState("");
   const [state, setState] = useState([]);
   const [stateId, setStateId] = useState("");
+  const [ Error, setError] = useState("Only accpet jpeg, png, jpg");
+  const [ Error2, setError2] = useState("");
+
 
   const handleCountry = (e) => {
     const getcountryId = e.target.value;
@@ -112,9 +75,24 @@ const UserInfo = ({ onSubmit } ) => {
     mobile: "",
     email: "",
     dob: "",
-    addr: ""
+    addr: "", 
+    sex: "",
+    course:""
 
   });
+
+  const [loading, setLoading] = useState(false);
+
+  const handleGenderChange = (e) => {
+    // Update gender state
+    setValues((prev) => ({ ...prev, sex: e.target.value }));
+  };
+
+  const handleCourseChange = (e) => {
+    // Update course state
+    setValues((prev) => ({ ...prev, course: e.target.value }));
+  };
+  console.log(values.sex)
 
   const submitdata = async (event) =>{
     // To upload the image on firebase
@@ -126,7 +104,26 @@ const UserInfo = ({ onSubmit } ) => {
     // })
 
     event.preventDefault();
-    const  {fname,lname,mobile, email, dob, addr} = values;
+    console.log(!photo && !signature)
+    if (!photo && !signature) {
+      alert("Please upload both photo and signature files.");
+      return;
+    } else if (!photo) {
+      alert("Please upload the photo file.");
+      return;
+    } else if (!signature) {
+      alert("Please upload the signature file.");
+      return;
+    }
+
+    
+    if (values.sex === '' || values.sex === 'select' || values.course === '' || values.course === 'select') {
+      alert("Please select the valid option")
+      return;
+    }
+
+    setLoading(true);
+    const  {fname,lname,mobile, email, dob, addr,sex,course} = values;
     // const res = fetch(
     //   "https://major-project-2d90b-default-rtdb.firebaseio.com/userRecord.json",
     //   {
@@ -168,9 +165,13 @@ const UserInfo = ({ onSubmit } ) => {
     );
     if (!response.ok) {
       console.error(`Failed to fetch the model ${response.status}.`);
-      console.log("response",response)
+      // Show popup message when API call fails
+      alert("Something went wrong. Please try again later.");
       return;
     }
+
+    setLoading(false);
+
     const result = await response.json();
     console.log(result)
 
@@ -184,25 +185,40 @@ const UserInfo = ({ onSubmit } ) => {
     let keys = Object.values(labelArray)
     let firstIndex = keys[0]
     let secondIndex = keys[1]
-
-    if (firstIndex === "photo" && secondIndex === "signature"){
-
-      alert("Great!")
-        // Pass data to onSubmit method
-        onSubmit({ fname, lname,mobile,email,dob,addr, photo, signature, modelResult: { label: labelArray[0], result: result } });
-  
-        // Navigate to 'Result' page
-        navigate('/Result');
+    
+    if (selectedFileName === selectedSignature){
+      alert(" Please select the different photo and signature")
     }
     else{
-      alert("Ooahoo! Please upload correct documents in the fields ")
+      if ((firstIndex === "photo" && secondIndex === "signature") || (firstIndex === "signature" && secondIndex === "photo")){
+  
+        alert("Great!")
+          // Pass data to onSubmit method
+          onSubmit({ fname, lname,mobile,email,dob,addr, photo, signature, sex,course, modelResult: { label: labelArray[0], result: result } });
+    
+          // Navigate to 'Result' page
+          navigate('/Result');
+      }
+      else{
+        alert("Ooahoo! Please upload correct documents in the fields ")
+      }
     }
 }
+// For date picker 
+const currentDate = new Date();
+currentDate.setDate(currentDate.getDate() - 2); // Subtract 2 days
+const maxDate = currentDate.toISOString().split('T')[0];
+
+// For Mobile number
+const mobileNumberRegex = /^\d{0,10}$/;
 
   return (
     <>
 
 <form onSubmit={submitdata}>
+
+{loading && <div className={styles.loading_spinner}></div>}
+
 <div className="row">
   <div className="col-md-4">
   <Dashboard/>
@@ -214,7 +230,7 @@ const UserInfo = ({ onSubmit } ) => {
           <div className="col-md-6">
             <div className={styles.container1}>
               <div className="upload-box">
-                <p className="para">Upload your photo</p>
+                <p className={styles.para}><strong>Upload photo</strong></p>
                 <form onClick={() => document.querySelector(".input_field").click()}>
                   <input
                     type="file"
@@ -223,17 +239,19 @@ const UserInfo = ({ onSubmit } ) => {
                     className="input_field"
                     hidden
                     onChange={handlePhotoChange}
+                    required
                   ></input>
                   <div className="icon1" >
                     <img src={imgg} alt="" />
                   </div>
                     <p>Browse file to upload</p>
                 </form>
-                <p style={{fontSize:13, textAlign:"center", justifyContent:"space-between"}}>{selectedFileName ? `${selectedFileName}`: `Browse the file`} 
-                  <HomeIcon style={{width:18, height:20}} onClick={() =>{
-                     setselectedFileName("No selected file");
+                <p style={{fontSize:13, textAlign:"center", justifyContent:"space-between"}}>{selectedFileName ? `${selectedFileName}`: `Not selected file    `} 
+                  <DeleteOutlineIcon style={{width:18, height:20, justifyContent:"space-between"}} onClick={() =>{
+                     setselectedFileName("Not selected file");
                       setImg(null)}} >
-                        </HomeIcon></p>
+                        </DeleteOutlineIcon></p>
+                        <p className={styles.error}>{Error}</p>
               </div>
               <br />
             </div>
@@ -242,7 +260,7 @@ const UserInfo = ({ onSubmit } ) => {
           <div className="col-md-6">
             <div className={styles.container1}>
               <div className="upload-box">
-                <p className="para">Upload signature</p>
+                <p className={styles.para}><strong>Upload Signature</strong></p>
                 <form onClick={() => document.querySelector(".input_field_2").click()}>
                   <input
                     type="file"
@@ -250,17 +268,19 @@ const UserInfo = ({ onSubmit } ) => {
                     hidden
                     className="input_field_2"
                     onChange={handleInputsignature}
+                    required
                   ></input>
                   <div className="icon1">
                     <img src={imgg} alt="" />
                   </div>
-                  <p>"Browse the file"</p>
+                  <p>Browse file to upload</p>
                 </form>
-                <p style={{fontSize:13, textAlign:"center", justifyContent:"space-between"}}>{selectedFileName ? `${selectedSignature}`: `Browse the file`} 
-                  <HomeIcon style={{width:18, height:20}} onClick={() =>{
-                     setselectedSignature("No selected file");
+                <p style={{fontSize:13, textAlign:"center", justifyContent:"space-between"}}>{selectedFileName ? `${selectedSignature}`: `Not selected file   `} 
+                  <DeleteOutlineIcon style={{width:18, height:20}} onClick={() =>{
+                     setselectedSignature("Not selected file");
                       setSignature(null)}} >
-                        </HomeIcon></p>
+                        </DeleteOutlineIcon></p>
+                <p className={styles.error}>{Error}</p>
               </div>
               <br />
             </div>
@@ -282,14 +302,15 @@ const UserInfo = ({ onSubmit } ) => {
             ></Inputfield>
 
             <Inputfield
-              label="Address"
-              placeholder="Address"
-              type="textarea"
+              label="Birth Date"
+              placeholder="Birth Date"
+              type="date"
               name="addr"
-              value={values.addr}
+              value={values.dob}
               onChange={(event) =>
-                setValues((prev) => ({ ...prev, addr: event.target.value }))
+                setValues((prev) => ({ ...prev, dob: event.target.value }))
               }
+              max={maxDate}
               required
             ></Inputfield>
 
@@ -304,7 +325,25 @@ const UserInfo = ({ onSubmit } ) => {
               }
               required
             ></Inputfield>
+
             
+
+             <select
+              className={styles.gnd}
+              label="Gender"
+              placeholder="gender"
+              type="text"
+              name="gnd"
+              value={values.gender}
+              onChange={handleGenderChange}
+              required
+            > <option value="select">select-</option>
+              <option value="Male">male</option>
+              <option value="female">female</option>
+              <option value="Other">Other</option>
+            </select>
+            <br />
+            <br />
             <div className="form-floating mb-3">
               <select
                 className="form-control"
@@ -323,7 +362,8 @@ const UserInfo = ({ onSubmit } ) => {
           <div className="col-md-6">
             <Inputfield
               label="Last Name"
-              placeholder="mobile number"
+              placeholder="last name"
+              type="text"
               name="lname"
               value={values.lname}
               onChange={(event) =>
@@ -333,26 +373,56 @@ const UserInfo = ({ onSubmit } ) => {
             ></Inputfield>
 
             <Inputfield
-              label="Birth Date"
-              placeholder="Birth Date"
-              type="date"
+              label="Address"
+              placeholder="Address"
+              type="textarea"
               name="dob"
-              value={values.dob}
+              value={values.addr}
               onChange={(event) =>
-                setValues((prev) => ({ ...prev, dob: event.target.value }))
+                setValues((prev) => ({ ...prev, addr: event.target.value }))
               }
               required
             ></Inputfield>
+            {Error2 && <div className={styles.setErr}> {Error2} </div>}
             <Inputfield
               label="Mobile no."
               placeholder="Mobile no."
+              type="tel"
               name="mobile"
               value={values.mobile}
-              onChange={(event) =>
-                setValues((prev) => ({ ...prev, mobile: event.target.value }))
-              }
+              onChange={(event) => {
+                const newValue = event.target.value;
+                // Check if the input matches the regex pattern
+                if (newValue === '' || mobileNumberRegex.test(newValue)) {
+                  // If it matches, update the state
+                  setValues((prev) => ({ ...prev, mobile: event.target.value }));
+                  setError2(" ")
+                }
+                else{
+                  setError2('Mobile number must be 10 digits');
+                }
+              }}
               required
             ></Inputfield>
+
+<select
+              className={styles.crs}
+              label="Course"
+              type="text"
+              name="fname"
+              value={values.cou}
+              onChange={handleCourseChange}
+              required
+            > <option value="select">Select the course-</option>
+              <option value="B.E/B.Tech">B.E/B.Tech</option>              
+              <option value="BSC">BSC</option>              
+              <option value="B.Com">B.Com</option>              
+
+            </select>
+            <br />
+            <br />
+            
+        
             <div className="form-floating mb-3">
               <select className="form-control" onChange={(e) => handlestate(e)}>
                 <option value="">--select-state--</option>
@@ -373,9 +443,15 @@ const UserInfo = ({ onSubmit } ) => {
       <br />
       <br />
       <Details/>
+      <br />
+      <br />
+      <br />
   </div>
 </div>
 </form>
+<div className={styles.faq}>
+      <FAQ/>
+</div>
       <ChatBot/>
     </>
   );

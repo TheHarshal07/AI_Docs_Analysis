@@ -11,7 +11,7 @@
     text-align: center;
     float: right;
     text-decoration: none;
-    padding: 17px 20px;
+    padding: 16px 20px;
     font-size: 20px;
     font-weight: 200;
     font-family: 'poppins', sans-serif;
@@ -50,8 +50,10 @@
 
 .topbar a:hover{
     background-color: rgb(249, 243, 235);
+    border-radius: 5rem;
 }
 .topbar a.active{
     background-color: rgb(55, 142, 241);
     color: white;
+    border-radius: 5rem;
 }

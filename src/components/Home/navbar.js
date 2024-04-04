@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { auth } from "../../firebase";
 import { useNavigate } from 'react-router-dom';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import { NavHashLink } from "react-router-hash-link";
 
 
 function TopBar(props) {
@@ -35,10 +36,10 @@ function TopBar(props) {
           <div className={styles.topbar}>
           <nav>
             <a className={styles.active} href="">Get Started<ArrowRightIcon/></a>
-            <a href="">Home</a>
-            <a href="">Service</a>
-            <a href="">About us</a>
-            <a href="">Contact</a>
+            <a href=""><span><NavHashLink style={{padding:1}} to="#About">About us</NavHashLink></span></a>
+            <a href=""><span><NavHashLink style={{padding:1}} to="#Contact">Contact</NavHashLink></span></a>
+            <a href=""><span><NavHashLink style={{padding:1}} to="#work">Service</NavHashLink></span></a>
+            <a href=""><span><NavHashLink style={{padding:1}} to="#Home">Home</NavHashLink></span></a>
           </nav>
         </div>
            <nav>

@@ -6,7 +6,6 @@ import UserInfo from "./components/Pages/UserInfo";
 import Home from "./components/Home/Home"
 import Signup from "./components/Signup/signup";
 import Login from "./components/Login/login";
-import UploadImage from "./components/Pages/Uploading"
 import Dashboard  from "./components/Home/dashboard";
 import Details from "./components/Pages/Details"
 import ResultPage from "./components/Pages/Result"
@@ -14,7 +13,15 @@ import { useEffect, useState } from "react";
 import { auth } from "./firebase";
 import {HashLink} from "react-router-hash-link"
 import AppRoutes from "./components/Pages/AppRoutes";
-import ChatBot from "./components/ChatBot/Chatting"
+import ChatBot from "./components/ChatBot/Chatting";
+import FAQ from "./components/LandingPage/Faq"
+//Landing Page
+import Home1 from "./components/LandingPage/Home"
+import About from "./components/LandingPage/About"
+import Contact from "./components/LandingPage/Contact"
+import Testimonial from "./components/LandingPage/Testimonial";
+import Work from "./components/LandingPage/Work";
+import Footer from "./components/LandingPage/Footer";
 
 
 function App() {
@@ -47,11 +54,17 @@ function App() {
             <Route path="/" element={<Login />}></Route>
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/login" element={<Login />}></Route>
-            <Route path="/Home" element={<Home name={userName} />}></Route>
+            <Route path="/Home" element={
+            <>
+            <Home1 name={userName} />
+            
+            </>
+          
+             }></Route>
             <Route path="/dashboard" element={<Dashboard name={ userName}/>}></Route>
-            <Route path="/Uploading" exact component={UploadImage}></Route>
             <Route path="/UserInfo" exact component={UserInfo}></Route>
             <Route path="/Details" exact component={Details}></Route>
+            <Route path="/Faq" exact component={FAQ}></Route>
             <Route path="/chat" exact component={ChatBot}></Route>
           </Routes>
         </BrowserRouter>

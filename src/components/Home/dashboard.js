@@ -6,11 +6,13 @@ import logo from "../../images/google.png";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import SearchIcon from "@mui/icons-material/Search";
 import HomeIcon from "@mui/icons-material/HomeOutlined";
+import QuizIcon from '@mui/icons-material/Quiz';
 import LogoutIcon from "@mui/icons-material/Logout";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import UserInfo from "../Pages/UserInfo";
 import { HashLink } from "react-router-hash-link";
+
 // navBar
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -26,7 +28,11 @@ export default function dashboard(props) {
   const home = () => {
     navigate("/Uploadimg");
   };
+  
 
+  
+
+ 
   return (
     <>
       {/* <Box sx={{ flexGrow: 1 }}>
@@ -56,10 +62,6 @@ export default function dashboard(props) {
           <nav className={`${styles.sidebar}`}>
             <header>
               <div className={styles.image_text}>
-                <span class={styles.image}>
-                  <img src={logo} alt="Home" />
-                </span>
-
                 <div className={styles.image_text_name}>
                   <span className={styles.name}>AutoDocs</span>
                 </div>
@@ -82,14 +84,8 @@ export default function dashboard(props) {
                 </li>
                 <li className={styles.nav_link}>
                   <a href="">
-                    <HomeIcon className={styles.icon} />
-                    <span className={styles.nav_text}><HashLink className={styles.name} to="#details">Notification</HashLink></span>
-                  </a>
-                </li>
-                <li className={styles.nav_link}>
-                  <a href="">
-                    <HomeIcon className={styles.icon} />
-                    <span className={styles.nav_text}><HashLink className={styles.name} to="#">Help</HashLink></span>
+                    <QuizIcon className={styles.icon} />
+                    <span className={styles.nav_text}><HashLink className={styles.name} to="#faq">FAQ</HashLink></span>
                   </a>
                 </li>
               </div>
@@ -99,20 +95,8 @@ export default function dashboard(props) {
                   <li>
                     <a href="">
                       <LogoutIcon />
-                      <span className={styles.bottom_text}>Logout</span>
+                      <span className={styles.bottom_text}  >Logout</span>
                     </a>
-                  </li>
-
-                  <li className={styles.mode}>
-                    <div className={styles.moon_sun}>
-                      <DarkModeIcon className={styles.moon} />
-                      <LightModeIcon className={styles.sun} />
-                    </div>
-                    <span className={styles.mode_text}>Dark mode</span>
-
-                    <div className={styles.toggle_switch}>
-                      <span className={styles.switch}></span>
-                    </div>
                   </li>
                 </div>
               </div>
