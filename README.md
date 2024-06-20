@@ -1,70 +1,33 @@
-# Getting Started with Create React App
+Project Overview
+Every year, students fill out exam forms and upload necessary documents such as photographs and signatures. However, it is common for students to mistakenly upload the photograph instead of the signature and vice versa. This project aims to provide a solution to automatically identify and correctly place the photograph and signature in their respective positions, even if they are initially uploaded incorrectly.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Technology Stack
+Frontend: React
+Backend: Firebase, Python (API creation)
+Support: Integrated ChatGPT for chat support
+Features
+Document Identification and Correction: Automatically identifies and places the photograph and signature in their correct positions on the admit card.
+Identity Verification: Students will upload their PAN card, from which their name and date of birth (DOB) will be extracted. These details will be matched with the information they have provided. If the details match, the student can proceed with the further process.
+Chat Support: Integrated ChatGPT for providing chat support to assist users with their queries.
+Project Structure
+The project is divided into the following main parts:
 
-## Available Scripts
+Frontend (React):
 
-In the project directory, you can run:
+User interface for form submission and document upload.
+Integration with Firebase for data storage and retrieval.
+Communication with the Python API for document processing.
+Backend (Firebase):
 
-### `npm start`
+User authentication and data storage.
+Real-time database for storing user details and document uploads.
+API (Python):
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Document processing to identify and correctly place photographs and signatures.
+Identity verification by extracting details from the uploaded PAN card and matching them with the provided information.
+Getting Started
+Prerequisites
+Node.js
+Python
+Firebase account
+PAN card dataset for testing
