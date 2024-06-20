@@ -1,11 +1,11 @@
-##Project Overview
+**Project Overview**
 Every year, students fill out exam forms and upload necessary documents such as photographs and signatures. However, it is common for students to mistakenly upload the photograph instead of the signature and vice versa. This project aims to provide a solution to automatically identify and correctly place the photograph and signature in their respective positions, even if they are initially uploaded incorrectly.
 
-Technology Stack
+**Technology Stack**
 Frontend: React
 Backend: Firebase, Python (API creation)
 Support: Integrated ChatGPT for chat support
-Features
+**Features**
 Document Identification and Correction: Automatically identifies and places the photograph and signature in their correct positions on the admit card.
 Identity Verification: Students will upload their PAN card, from which their name and date of birth (DOB) will be extracted. These details will be matched with the information they have provided. If the details match, the student can proceed with the further process.
 Chat Support: Integrated ChatGPT for providing chat support to assist users with their queries.
