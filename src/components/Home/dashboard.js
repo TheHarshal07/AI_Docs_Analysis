@@ -25,8 +25,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 export default function dashboard(props) {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const navigate = useNavigate();
-  const home = () => {
-    navigate("/Uploadimg");
+  const LogOff = () => {
+    navigate("/login");
   };
   
 
@@ -95,7 +95,7 @@ export default function dashboard(props) {
                   <li>
                     <a href="">
                       <LogoutIcon />
-                      <span className={styles.bottom_text}  >Logout</span>
+                      <span className={styles.bottom_text} onClick={LogOff}  >Logout</span>
                     </a>
                   </li>
                 </div>

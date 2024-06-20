@@ -56,7 +56,7 @@ const Home = (props) => {
     <Testimonial/>
     <Contact/>
     <Footer/>
-    < ChatBot/>
+    {/* < ChatBot/> */}
     </>
   );
 };

@@ -46,7 +46,7 @@ export default function Home(props) {
       </picture>
       
     </div>
-    <ChatBot></ChatBot>
+    {/* <ChatBot></ChatBot> */}
 
     </>
   )

@@ -15,6 +15,7 @@ import {HashLink} from "react-router-hash-link"
 import AppRoutes from "./components/Pages/AppRoutes";
 import ChatBot from "./components/ChatBot/Chatting";
 import FAQ from "./components/LandingPage/Faq"
+import Loading from "./components/Pages/loading"
 //Landing Page
 import Home1 from "./components/LandingPage/Home"
 import About from "./components/LandingPage/About"
@@ -54,6 +55,7 @@ function App() {
             <Route path="/" element={<Login />}></Route>
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/login" element={<Login />}></Route>
+            <Route path="/loading" element={<Loading/>}></Route>
             <Route path="/Home" element={
             <>
             <Home1 name={userName} />

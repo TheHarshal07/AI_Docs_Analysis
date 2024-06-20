@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styles from "./UserInfo.module.css";
 import Inputfield from "../InputControl/input";
@@ -10,6 +10,11 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { useNavigate } from "react-router-dom";
 import ChatBot from "../ChatBot/Chatting"
 import FAQ from "../LandingPage/Faq"
+import axios from "axios";
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
+import CircularIndeterminate from "./loading";
+
 
 const UserInfo = ({ onSubmit } ) => {
   // All state
@@ -19,7 +24,8 @@ const UserInfo = ({ onSubmit } ) => {
   const [signature, setSignature] = useState(null)
   const [selectedFileName, setselectedFileName] = useState("")
   const [selectedSignature, setselectedSignature] = useState("")
-  const [ ErrorFile, setErrorFile] = useState("")
+  const [ ErrorFile, setErrorFile] = useState("");
+  const [pancard, setPanCard] = useState("please uplaod only PanCard ");
 
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
@@ -92,19 +98,54 @@ const UserInfo = ({ onSubmit } ) => {
     // Update course state
     setValues((prev) => ({ ...prev, course: e.target.value }));
   };
-  console.log(values.sex)
+  
+
+   // eslint-disable-next-line react-hooks/rules-of-hooks
+   const [file, setFile] = useState(null);// eslint-disable-next-line react-hooks/rules-of-hooks
+   const [name1, setName] = useState("")
+  
+   // eslint-disable-next-line react-hooks/rules-of-hooks
+   const [dob1, setDob] = useState("")
+
+  const handleInput = (e) => {
+    const pancard = e.target.files[0]
+    if (pancard){
+      const FilName = pancard.name
+      const extension = FilName.split(".").pop().toLowerCase();
+      if (extension === "jpeg" || extension === "png" || extension === "jpg"){
+        setFile(pancard)
+      }
+      else{
+        // setPanCard("Please upload a JPEG or PNG or JPG file.")
+        alert("Please upload a JPEG or PNG or JPG file.")
+        return
+      }
+    }
+  };
 
   const submitdata = async (event) =>{
-    // To upload the image on firebase
-    // const imgset = ref(imageDb, `files/${v4()}`)
-    // uploadBytes(imgset, photo).then(data=>{
-    //   getDownloadURL(data.ref).then(val=>{
-    //     setImg(val)
-    //   })
-    // })
+  event.preventDefault();
+  const formData = new FormData();
+  formData.append("image", file);
 
-    event.preventDefault();
-    console.log(!photo && !signature)
+  try {
+    const response = await axios.post("http://127.0.0.1:5000/verify_pan", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    
+    setName(response.data.name);
+    setDob(response.data.dob);
+  } catch (error) {
+    console.error("Error:", error);
+  }
+
+    console.log(file)
+    if(!file){
+      alert("please uplaod PAN Card")
+      return
+    }
     if (!photo && !signature) {
       alert("Please upload both photo and signature files.");
       return;
@@ -116,14 +157,33 @@ const UserInfo = ({ onSubmit } ) => {
       return;
     }
 
-    
     if (values.sex === '' || values.sex === 'select' || values.course === '' || values.course === 'select') {
       alert("Please select the valid option")
       return;
     }
-
-    setLoading(true);
     const  {fname,lname,mobile, email, dob, addr,sex,course} = values;
+    var parts = values.dob.split('-');
+
+// Rearrange the parts in the desired format (DD-MM-YYYY)
+  var dob_new = parts[2] + '/' + parts[1] + '/' + parts[0];
+  console.log(dob_new)
+    if (name1 === values.fname.toLowerCase() && dob_new === dob1   ){
+      alert("Verified! Details Matched with PAN CARD")
+    }
+    
+    else{
+      if(name1 !== values.fname.toLowerCase()){
+        alert("NOT Verified!, Name did not match with PAN CARD")
+        return
+      }
+      else{
+        alert("NOT Verified! DOB Did Not Match with PAN CARD")
+        return
+      }
+    }
+
+  setLoading(true);
+
     // const res = fetch(
     //   "https://major-project-2d90b-default-rtdb.firebaseio.com/userRecord.json",
     //   {
@@ -163,14 +223,14 @@ const UserInfo = ({ onSubmit } ) => {
       body: photo,
     }
     );
+    
     if (!response.ok) {
       console.error(`Failed to fetch the model ${response.status}.`);
       // Show popup message when API call fails
+      setLoading(false)
       alert("Something went wrong. Please try again later.");
       return;
     }
-
-    setLoading(false);
 
     const result = await response.json();
     console.log(result)
@@ -186,12 +246,14 @@ const UserInfo = ({ onSubmit } ) => {
     let firstIndex = keys[0]
     let secondIndex = keys[1]
     
+    setTimeout(()=>{
+    setLoading(false)
     if (selectedFileName === selectedSignature){
       alert(" Please select the different photo and signature")
     }
     else{
       if ((firstIndex === "photo" && secondIndex === "signature") || (firstIndex === "signature" && secondIndex === "photo")){
-  
+        setLoading(false)
         alert("Great!")
           // Pass data to onSubmit method
           onSubmit({ fname, lname,mobile,email,dob,addr, photo, signature, sex,course, modelResult: { label: labelArray[0], result: result } });
@@ -203,6 +265,7 @@ const UserInfo = ({ onSubmit } ) => {
         alert("Ooahoo! Please upload correct documents in the fields ")
       }
     }
+  },3000)
 }
 // For date picker 
 const currentDate = new Date();
@@ -212,12 +275,18 @@ const maxDate = currentDate.toISOString().split('T')[0];
 // For Mobile number
 const mobileNumberRegex = /^\d{0,10}$/;
 
+// Code for NLP ( PandCard extraction )
+
+console.log(loading)
   return (
     <>
+{loading && 
+
+<CircularIndeterminate loading={loading} />
+}
+
 
 <form onSubmit={submitdata}>
-
-{loading && <div className={styles.loading_spinner}></div>}
 
 <div className="row">
   <div className="col-md-4">
@@ -289,6 +358,12 @@ const mobileNumberRegex = /^\d{0,10}$/;
 
         <div className="row">
           <div className="col-md-6">
+          <span style={{fontSize:10, color: 'red'}}>{pancard}</span>
+            <input type="file"  onChange={handleInput} />
+            <br></br>
+           
+            <br />
+            <br/>
             <Inputfield
               label="First Name"
               placeholder="First Name"
@@ -358,8 +433,13 @@ const mobileNumberRegex = /^\d{0,10}$/;
               </select>
             </div>
           </div>
-
+          
           <div className="col-md-6">
+          <br/>
+          <br />
+          <br />
+          <br />
+          
             <Inputfield
               label="Last Name"
               placeholder="last name"
@@ -449,10 +529,11 @@ const mobileNumberRegex = /^\d{0,10}$/;
   </div>
 </div>
 </form>
+
 <div className={styles.faq}>
       <FAQ/>
 </div>
-      <ChatBot/>
+      {/* <ChatBot/> */}
     </>
   );
 }
